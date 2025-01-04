@@ -11,7 +11,7 @@ namespace InspiredCodes.ExpressMapper.Tests.Impl;
 public class MiscTest
 {
     [TestMethod]
-    public void DTOTypeCodeTest()
+    public void DateTimeOffsetTypeTest()
     {
         string @empty = TypeCode.Empty.ToString();
         string @object = TypeCode.Object.ToString();
