@@ -15,11 +15,11 @@ namespace InspiredCodes.ExpressMapper;
 public class StringTypeValueConverter
 {
     /// <summary>
-    /// StringTypeValueConverter
+    /// Value Type to String Value converter
     /// </summary>
     public StringTypeValueConverter() { }
 
-    private (bool Success, object Result) GetValue(string valueAsString, TypeCode typeCode)
+    protected static (bool Success, object Result) GetValue(string valueAsString, TypeCode typeCode)
     {
         bool success = false;
         object result = new();
@@ -108,7 +108,7 @@ public class StringTypeValueConverter
         return (success, result);
     }
 
-    private (bool Success, object Result) ParseDateTimeOffset(string valueAsString)
+    protected static (bool Success, object Result) ParseDateTimeOffset(string valueAsString)
     {
         bool success = DateTimeOffset.TryParse(valueAsString, out DateTimeOffset dto);
         return (success, dto);
@@ -119,7 +119,7 @@ public class StringTypeValueConverter
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public T CreateInstanceOf<T>()
+    public static T CreateInstanceOf<T>()
     {
         //DBNull
         if (typeof(DBNull) == typeof(T))
@@ -129,7 +129,7 @@ public class StringTypeValueConverter
             return (T)(object)String.Empty;
         //all other TypeCodes
         else
-            return (T)Activator.CreateInstance(typeof(T));
+            return Activator.CreateInstance<T>();
     }
 
     /// <summary>
@@ -138,7 +138,7 @@ public class StringTypeValueConverter
     /// <typeparam name="T"></typeparam>
     /// <param name="value"></param>
     /// <returns></returns>
-    public T CreateInstanceOf<T>(string value)
+    public static T CreateInstanceOf<T>(string value)
     {
         if (String.IsNullOrWhiteSpace(value))
             return CreateInstanceOf<T>();
@@ -146,6 +146,7 @@ public class StringTypeValueConverter
         //DBNull
         if (typeof(DBNull) == typeof(T))
             return (T)(object)DBNull.Value;
+        
         //String 
         else if (typeof(String) == typeof(T))
             return String.IsNullOrWhiteSpace(value) ?

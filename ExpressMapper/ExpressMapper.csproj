@@ -18,9 +18,9 @@
 		<!-- first and second version block indicated code changes, 
              last version block is incremented only when new translation is added -->
 		<!-- https://learn.microsoft.com/en-us/dotnet/standard/frameworks -->
-		<AssemblyVersion>5.0.0</AssemblyVersion>
-		<FileVersion>5.0.0</FileVersion>
-		<TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
+		<AssemblyVersion>5.2.0</AssemblyVersion>
+		<FileVersion>5.2.0</FileVersion>
+		<TargetFrameworks>netstandard2.1;netstandard2.0;net8.0</TargetFrameworks>
 		<LangVersion>12.0</LangVersion>
 		<Nullable>enable</Nullable>
 		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>

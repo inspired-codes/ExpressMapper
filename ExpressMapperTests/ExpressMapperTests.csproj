@@ -2,11 +2,11 @@
 
     <PropertyGroup>
         <AssemblyName>ExpressMapperTests</AssemblyName>
-        <FileVersion>2.3.0</FileVersion>
-        <AssemblyVersion>2.3.0</AssemblyVersion>
+        <FileVersion>2.4.0</FileVersion>
+        <AssemblyVersion>2.4.0</AssemblyVersion>
         <RootNamespace>ExpressMapper.Tests</RootNamespace>
         <LangVersion>12.0</LangVersion>
-        <TargetFramework>net80</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <IsPublishable>False</IsPublishable>
         <RunAnalyzersDuringBuild>False</RunAnalyzersDuringBuild>
@@ -29,14 +29,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-        <PackageReference Include="MSTest.TestAdapter" Version="3.4.3" />
-        <PackageReference Include="MSTest.TestFramework" Version="3.4.3" />
-        <PackageReference Include="coverlet.collector" Version="6.0.2">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+        <PackageReference Include="MSTest.TestAdapter" Version="3.7.0" />
+        <PackageReference Include="MSTest.TestFramework" Version="3.7.0" />
+        <PackageReference Include="coverlet.collector" Version="6.0.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="System.Text.Json" Version="8.0.4" />
+        <PackageReference Include="System.Text.Json" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>

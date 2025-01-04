@@ -16,13 +16,10 @@ namespace InspiredCodes.ExpressMapper;
 /// copy by value
 /// support for value types like enum and struct
 /// </summary>
-public static class InterfacePropertiesClone
+public class InterfacePropertiesClone : PropertiesClone
 {
-    private static object lock_iftpd = new object();
-
-    static Dictionary<Type, Type[]> InterfaceChildInterfaceTypeDict { get; } = new Dictionary<Type, Type[]>();
-    static Dictionary<Type, Dictionary<string, PropertyInfo>> TypePropertyDict { get; } = new Dictionary<Type, Dictionary<string, PropertyInfo>>();
-    static Dictionary<Type, HashSet<string>> InterfaceTypePropertyDict { get; } = new Dictionary<Type, HashSet<string>>();
+    static Dictionary<Type, Type[]> InterfaceChildInterfaceTypeDict { get; } = [];
+    static Dictionary<Type, HashSet<string>> InterfaceTypePropertyDict { get; } = [];
 
     /// <summary>
     /// gets and caches the properties of type, 
@@ -46,28 +43,14 @@ public static class InterfacePropertiesClone
 
         if (!TypePropertyDict.TryGetValue(sourceType, out sourceProperties))
         {
-            _ppts = sourceType.GetProperties();
-            var _len = _ppts.Length;
-            sourceProperties = new Dictionary<string, PropertyInfo>(_len);
-
-            for (int i = 0; i < _len; i++)
-                sourceProperties[_ppts[i].Name] = _ppts[i];
-
-            TypePropertyDict[sourceType] = sourceProperties;
+            TypePropertyDict[sourceType] = GetPropertyNamesInfos(sourceType, out sourceProperties, out _ppts);
         }
 
         // target, get sorted list with property name and property info
         targetType = typeof(T); // target.GetType();
         if (!TypePropertyDict.TryGetValue(targetType, out targetProperties))
         {
-            _ppts = targetType.GetProperties();
-            var _len = _ppts.Length;
-            targetProperties = new Dictionary<string, PropertyInfo>(_len);
-
-            for (int i = 0; i < _len; i++)
-                targetProperties[_ppts[i].Name] = _ppts[i];
-
-            TypePropertyDict[targetType] = targetProperties;
+            TypePropertyDict[targetType] = GetPropertyNamesInfos(targetType, out targetProperties, out _ppts);
         }
 
         // interface
@@ -81,17 +64,10 @@ public static class InterfacePropertiesClone
         //Dictionary<string, PropertyInfo> interfaceProperties;// = new SortedList<string, PropertyInfo>();
         if (!TypePropertyDict.TryGetValue(interfaceType, out Dictionary<string, PropertyInfo> interfaceProperties))
         {
-            _ppts = interfaceType.GetProperties();
-            var _len = _ppts.Length;
-            interfaceProperties = new Dictionary<string, PropertyInfo>(_len);
-
-            for (int i = 0; i < _len; i++)
-                interfaceProperties[_ppts[i].Name] = _ppts[i];
-
-            TypePropertyDict[interfaceType] = interfaceProperties;
+            TypePropertyDict[interfaceType] = GetPropertyNamesInfos(interfaceType, out interfaceProperties, out _ppts);
         }
 
-        lock (lock_iftpd)
+        lock (LockAddKV)
             InterfaceTypePropertyDict[interfaceType] = new HashSet<string>(interfaceProperties.Select(p => p.Key).ToArray());
 
         /* child interfaces */

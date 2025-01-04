@@ -16,12 +16,9 @@ namespace InspiredCodes.ExpressMapper;
 /// copy by value
 /// support for value types like enum and struct
 /// </summary>
-public static class ClassPropertiesClone
+public class ClassPropertiesClone : PropertiesClone
 {
-    private static object lock_cstpd = new object();
-
-    static Dictionary<Type, Dictionary<string, PropertyInfo>> TypePropertyDict { get; } = new Dictionary<Type, Dictionary<string, PropertyInfo>>();
-    static Dictionary<Type, HashSet<string>> ClassTypePropertyDict { get; } = new Dictionary<Type, HashSet<string>>();
+    static Dictionary<Type, HashSet<string>> ClassTypePropertyDict { get; } = [];
 
     /// <summary>
     /// gets and caches the properties of type, 
@@ -45,28 +42,14 @@ public static class ClassPropertiesClone
 
         if (!TypePropertyDict.TryGetValue(sourceType, out sourceProperties))
         {
-            _ppts = sourceType.GetProperties();
-            var _len = _ppts.Length;
-            sourceProperties = new Dictionary<string, PropertyInfo>(_len);
-
-            for (int i = 0; i < _len; i++)
-                sourceProperties[_ppts[i].Name] = _ppts[i];
-
-            TypePropertyDict[sourceType] = sourceProperties;
+            TypePropertyDict[sourceType] = GetPropertyNamesInfos(sourceType, out sourceProperties,  out _ppts);
         }
 
         // target, get sorted list with property name and property info
         targetType = typeof(T); // target.GetType();
         if (!TypePropertyDict.TryGetValue(targetType, out targetProperties))
         {
-            _ppts = targetType.GetProperties();
-            var _len = _ppts.Length;
-            targetProperties = new Dictionary<string, PropertyInfo>(_len);
-
-            for (int i = 0; i < _len; i++)
-                targetProperties[_ppts[i].Name] = _ppts[i];
-
-            TypePropertyDict[targetType] = targetProperties;
+            TypePropertyDict[targetType] = GetPropertyNamesInfos(targetType, out targetProperties, out _ppts);
         }
 
         //Dictionary<string, PropertyInfo> interfaceProperties;// = new SortedList<string, PropertyInfo>();
@@ -82,11 +65,15 @@ public static class ClassPropertiesClone
             TypePropertyDict[sourceType] = interfaceProperties;
         }
 
-        lock (lock_cstpd)
+        lock (LockAddKV)
             ClassTypePropertyDict[sourceType] = new HashSet<string>(interfaceProperties.Select(p => p.Key).ToArray());
 
         allPropertyNames = ClassTypePropertyDict[sourceType];
     }
+
+
+
+
 
     /// <summary>
     /// copies values from source instance to target for instances 
@@ -173,13 +160,12 @@ public static class ClassPropertiesClone
         if (source == null)
             throw new ArgumentNullException(nameof(source));
 
-        var count = 0;
-
         GetPropertyMetadata<S, T>(out HashSet<string> allPropertyNames,
                                   out Type targetType,
                                   out Dictionary<string, PropertyInfo> sourceProperties,
                                   out Dictionary<string, PropertyInfo> targetProperties);
 
+        int count = 0;
         if (targetType.IsValueType)
         {
             var boxed = (object)target;

@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace InspiredCodes.ExpressMapper.Tests.Impl;
 
+using Converter = InspiredCodes.ExpressMapper.StringTypeValueConverter;
+
 [TestClass()]
 public class StringTypeValueConverterTests
 {
@@ -22,35 +24,35 @@ public class StringTypeValueConverterTests
         StringTypeValueConverter stvc = new StringTypeValueConverter();
         for (int i = 0; i < 1000; i++)
         {
-            object obj = stvc.CreateInstanceOf<object>(null);
+            object obj = Converter.CreateInstanceOf<object>(null);
             Assert.IsNotNull(obj);
 
-            short i16 = stvc.CreateInstanceOf<short>(short.MaxValue.ToString());
+            short i16 = Converter.CreateInstanceOf<short>(short.MaxValue.ToString());
             Assert.IsNotNull(i16);
             Assert.IsTrue(i16 == short.MaxValue);
 
-            long i64 = stvc.CreateInstanceOf<long>(long.MaxValue.ToString());
+            long i64 = Converter.CreateInstanceOf<long>(long.MaxValue.ToString());
             Assert.IsNotNull(i64);
             Assert.IsTrue(i64 == long.MaxValue);
 
-            DateTime dateTime = stvc.CreateInstanceOf<DateTime>(DateTime.MinValue.ToString("o"));
+            DateTime dateTime = Converter.CreateInstanceOf<DateTime>(DateTime.MinValue.ToString("o"));
             Assert.IsNotNull(dateTime);
             Assert.IsTrue(dateTime.Equals(DateTime.MinValue));
 
-            string s = stvc.CreateInstanceOf<string>("908709756^°ß@\\#'");
+            string s = Converter.CreateInstanceOf<string>("908709756^°ß@\\#'");
             Assert.IsFalse(string.IsNullOrWhiteSpace(s));
             Assert.IsTrue(s == "908709756^°ß@\\#'");
 
             DBNull dbNull = DBNull.Value;
-            DBNull sNull = stvc.CreateInstanceOf<DBNull>(dbNull.ToString());
+            DBNull sNull = Converter.CreateInstanceOf<DBNull>(dbNull.ToString());
             Assert.IsTrue(sNull is DBNull);
             Assert.IsTrue(sNull == DBNull.Value);
 
-            decimal m = stvc.CreateInstanceOf<decimal>(983.39M.ToString());
+            decimal m = Converter.CreateInstanceOf<decimal>(983.39M.ToString());
             Assert.IsNotNull(m);
             Assert.IsTrue(983 < m);
 
-            decimal m2 = stvc.CreateInstanceOf<decimal>(string.Empty);
+            decimal m2 = Converter.CreateInstanceOf<decimal>(string.Empty);
             Assert.IsNotNull(m2);
             Assert.IsTrue(m2 == 0);
         }
@@ -189,7 +191,7 @@ public class StringTypeValueConverterTests
         for (int i = 0; i < 333; i++)
         {
             decimal m = i % 3 + 88.98M;
-            object out_ = sTVConverter.CreateInstanceOf<decimal>(m.ToString());
+            object out_ = Converter.CreateInstanceOf<decimal>(m.ToString());
             sb.Append(" : ").Append(out_.ToString());
         }
         stopwatch.Stop();
