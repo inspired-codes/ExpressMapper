@@ -1,7 +1,7 @@
 ﻿/* ***************************************************************
  * @author: Peter Metz
  * @since: summer 2017
- * @change: 2022, 2024
+ * @change: 2022, 2025
  * @copyright: Peter Metz
  * ************************************************************** */
 
@@ -18,10 +18,7 @@ namespace InspiredCodes.ExpressMapper;
 /// </summary>
 public class InterfacePropertiesClone : PropertiesClone
 {
-    private static object lock_iftpd = new object();
-
     static Dictionary<Type, Type[]> InterfaceChildInterfaceTypeDict { get; } = [];
-    static Dictionary<Type, Dictionary<string, PropertyInfo>> TypePropertyDict { get; } = [];
     static Dictionary<Type, HashSet<string>> InterfaceTypePropertyDict { get; } = [];
 
     /// <summary>
@@ -70,7 +67,7 @@ public class InterfacePropertiesClone : PropertiesClone
             TypePropertyDict[interfaceType] = GetPropertyNamesInfos(interfaceType, out interfaceProperties, out _ppts);
         }
 
-        lock (lock_iftpd)
+        lock (LockAddKV)
             InterfaceTypePropertyDict[interfaceType] = new HashSet<string>(interfaceProperties.Select(p => p.Key).ToArray());
 
         /* child interfaces */
@@ -107,18 +104,6 @@ public class InterfacePropertiesClone : PropertiesClone
         }
 
         allPropertyNames = InterfaceTypePropertyDict[interfaceType];
-    }
-
-    private static Dictionary<string, PropertyInfo> NewMethod(out PropertyInfo[] _ppts, Type interfaceType, out Dictionary<string, PropertyInfo> interfaceProperties)
-    {
-        _ppts = interfaceType.GetProperties();
-        var _len = _ppts.Length;
-        interfaceProperties = new Dictionary<string, PropertyInfo>(_len);
-
-        for (int i = 0; i < _len; i++)
-            interfaceProperties[_ppts[i].Name] = _ppts[i];
-
-        return interfaceProperties;
     }
 
     /// <summary>

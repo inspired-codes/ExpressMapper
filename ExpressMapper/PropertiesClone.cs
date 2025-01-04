@@ -13,13 +13,17 @@ namespace InspiredCodes.ExpressMapper;
 
 public class PropertiesClone
 {
+    private static readonly object _LockAddKV = new object();
+    protected static object LockAddKV => _LockAddKV;
+    protected static Dictionary<Type, Dictionary<string, PropertyInfo>> TypePropertyDict { get; } = [];
+
     protected static Dictionary<string, PropertyInfo> GetPropertyNamesInfos(
-        Type type, 
-        out Dictionary<string, PropertyInfo> propertiesNames, 
+        Type type,
+        out Dictionary<string, PropertyInfo> propertiesNames,
         out PropertyInfo[] propertyInfos)
     {
         propertyInfos = type.GetProperties();
-        
+
         int _len = propertyInfos.Length;
         propertiesNames = new Dictionary<string, PropertyInfo>(_len);
 

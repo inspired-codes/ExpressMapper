@@ -1,7 +1,7 @@
 ﻿/* ***************************************************************
  * @author: Peter Metz
  * @since: summer 2017
- * @change: 2022, 2024
+ * @change: 2022, 2025
  * @copyright: Peter Metz
  * ************************************************************** */
 
@@ -18,9 +18,6 @@ namespace InspiredCodes.ExpressMapper;
 /// </summary>
 public class ClassPropertiesClone : PropertiesClone
 {
-    private static object lock_cstpd = new object();
-
-    static Dictionary<Type, Dictionary<string, PropertyInfo>> TypePropertyDict { get; } = [];
     static Dictionary<Type, HashSet<string>> ClassTypePropertyDict { get; } = [];
 
     /// <summary>
@@ -68,7 +65,7 @@ public class ClassPropertiesClone : PropertiesClone
             TypePropertyDict[sourceType] = interfaceProperties;
         }
 
-        lock (lock_cstpd)
+        lock (LockAddKV)
             ClassTypePropertyDict[sourceType] = new HashSet<string>(interfaceProperties.Select(p => p.Key).ToArray());
 
         allPropertyNames = ClassTypePropertyDict[sourceType];
