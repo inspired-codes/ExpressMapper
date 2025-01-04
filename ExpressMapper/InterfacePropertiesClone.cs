@@ -46,14 +46,14 @@ public class InterfacePropertiesClone : PropertiesClone
 
         if (!TypePropertyDict.TryGetValue(sourceType, out sourceProperties))
         {
-            TypePropertyDict[sourceType] = GetPropertyNamesInfos(sourceType, out sourceProperties,  out _ppts);
+            TypePropertyDict[sourceType] = GetPropertyNamesInfos(sourceType, out sourceProperties, out _ppts);
         }
 
         // target, get sorted list with property name and property info
         targetType = typeof(T); // target.GetType();
         if (!TypePropertyDict.TryGetValue(targetType, out targetProperties))
         {
-            GetPropertyNamesInfos(targetType, out targetProperties, out _ppts);
+            TypePropertyDict[targetType] = GetPropertyNamesInfos(targetType, out targetProperties, out _ppts);
         }
 
         // interface
@@ -67,14 +67,7 @@ public class InterfacePropertiesClone : PropertiesClone
         //Dictionary<string, PropertyInfo> interfaceProperties;// = new SortedList<string, PropertyInfo>();
         if (!TypePropertyDict.TryGetValue(interfaceType, out Dictionary<string, PropertyInfo> interfaceProperties))
         {
-            _ppts = interfaceType.GetProperties();
-            var _len = _ppts.Length;
-            interfaceProperties = new Dictionary<string, PropertyInfo>(_len);
-
-            for (int i = 0; i < _len; i++)
-                interfaceProperties[_ppts[i].Name] = _ppts[i];
-
-            TypePropertyDict[interfaceType] = interfaceProperties;
+            TypePropertyDict[interfaceType] = GetPropertyNamesInfos(interfaceType, out interfaceProperties, out _ppts);
         }
 
         lock (lock_iftpd)
@@ -114,6 +107,18 @@ public class InterfacePropertiesClone : PropertiesClone
         }
 
         allPropertyNames = InterfaceTypePropertyDict[interfaceType];
+    }
+
+    private static Dictionary<string, PropertyInfo> NewMethod(out PropertyInfo[] _ppts, Type interfaceType, out Dictionary<string, PropertyInfo> interfaceProperties)
+    {
+        _ppts = interfaceType.GetProperties();
+        var _len = _ppts.Length;
+        interfaceProperties = new Dictionary<string, PropertyInfo>(_len);
+
+        for (int i = 0; i < _len; i++)
+            interfaceProperties[_ppts[i].Name] = _ppts[i];
+
+        return interfaceProperties;
     }
 
     /// <summary>

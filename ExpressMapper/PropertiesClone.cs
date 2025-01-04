@@ -1,7 +1,7 @@
 ﻿/* ***************************************************************
  * @author: Peter Metz
  * @since: summer 2017
- * @change: 2022, 2024
+ * @change: 2022, 2025
  * @copyright: Peter Metz
  * ************************************************************** */
 
@@ -14,18 +14,19 @@ namespace InspiredCodes.ExpressMapper;
 public class PropertiesClone
 {
     protected static Dictionary<string, PropertyInfo> GetPropertyNamesInfos(
-        Type targetType, 
-        out Dictionary<string, PropertyInfo> targetProperties, 
-        out PropertyInfo[] _ppts)
+        Type type, 
+        out Dictionary<string, PropertyInfo> propertiesNames, 
+        out PropertyInfo[] propertyInfos)
     {
-        _ppts = targetType.GetProperties();
-        var _len = _ppts.Length;
-        targetProperties = new Dictionary<string, PropertyInfo>(_len);
+        propertyInfos = type.GetProperties();
+        
+        int _len = propertyInfos.Length;
+        propertiesNames = new Dictionary<string, PropertyInfo>(_len);
 
         for (int i = 0; i < _len; i++)
-            targetProperties[_ppts[i].Name] = _ppts[i];
+            propertiesNames[propertyInfos[i].Name] = propertyInfos[i];
 
-        return targetProperties;
+        return propertiesNames;
     }
 
 }
