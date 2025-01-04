@@ -7,10 +7,12 @@
 		<Product>Inspired-Codes .NET Express Mapper</Product>
 		<Authors>Peter Metz</Authors>
 		<RepositoryUrl>https://github.com/inspired-codes/ExpressMapper</RepositoryUrl>
-		<Description>
-			Deep cloning of values from two instances implementing same interface or
-			two instances having one or more same property-type.
-			Maps string representation of type to casted type (boxed as object)
+		<Description>Copy values from two instances implementing same interface or
+two instances having one or more same property-type.
+
+Support for immutable value types.
+
+Maps string representation of type to casted type (boxed as object)
 		</Description>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageIcon>arrow-right-double-3.png</PackageIcon>
@@ -18,8 +20,8 @@
 		<!-- first and second version block indicated code changes, 
              last version block is incremented only when new translation is added -->
 		<!-- https://learn.microsoft.com/en-us/dotnet/standard/frameworks -->
-		<AssemblyVersion>5.2.0</AssemblyVersion>
-		<FileVersion>5.2.0</FileVersion>
+		<AssemblyVersion>1.0.1</AssemblyVersion>
+		<FileVersion>$(AssemblyVersion)</FileVersion>
 		<TargetFrameworks>netstandard2.1;netstandard2.0;net8.0</TargetFrameworks>
 		<LangVersion>12.0</LangVersion>
 		<Nullable>enable</Nullable>
@@ -32,8 +34,11 @@
 		<Configurations>Debug;Optimized</Configurations>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Title>Inspired-Codes Express Mapper</Title>
-		<Copyright>Peter Metz</Copyright>
+		<Copyright>Copyrght by Peter Metz and contributes (MIT License)</Copyright>
 		<PackageProjectUrl>https://github.com/inspired-codes/ExpressMapper</PackageProjectUrl>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -96,6 +101,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="..\LICENSE">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
 		<None Include="arrow-right-double-3.ico">
 			<Pack>True</Pack>
 			<PackagePath></PackagePath>
