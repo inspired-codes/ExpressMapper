@@ -45,14 +45,14 @@ public class ClassPropertiesClone : PropertiesClone
 
         if (!TypePropertyDict.TryGetValue(sourceType, out sourceProperties))
         {
-            TypePropertyDict[sourceType] = GetPropertyNamesInfos(out sourceProperties, sourceType, out _ppts);
+            TypePropertyDict[sourceType] = GetPropertyNamesInfos(sourceType, out sourceProperties,  out _ppts);
         }
 
         // target, get sorted list with property name and property info
         targetType = typeof(T); // target.GetType();
         if (!TypePropertyDict.TryGetValue(targetType, out targetProperties))
         {
-            NewMethod(targetType, out targetProperties, out _ppts);
+            TypePropertyDict[targetType] = GetPropertyNamesInfos(targetType, out targetProperties, out _ppts);
         }
 
         //Dictionary<string, PropertyInfo> interfaceProperties;// = new SortedList<string, PropertyInfo>();
@@ -76,17 +76,7 @@ public class ClassPropertiesClone : PropertiesClone
 
 
 
-    private static void NewMethod(Type targetType, out Dictionary<string, PropertyInfo> targetProperties, out PropertyInfo[] _ppts)
-    {
-        _ppts = targetType.GetProperties();
-        var _len = _ppts.Length;
-        targetProperties = new Dictionary<string, PropertyInfo>(_len);
 
-        for (int i = 0; i < _len; i++)
-            targetProperties[_ppts[i].Name] = _ppts[i];
-
-        TypePropertyDict[targetType] = targetProperties;
-    }
 
     /// <summary>
     /// copies values from source instance to target for instances 

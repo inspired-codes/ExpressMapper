@@ -46,14 +46,14 @@ public class InterfacePropertiesClone : PropertiesClone
 
         if (!TypePropertyDict.TryGetValue(sourceType, out sourceProperties))
         {
-            TypePropertyDict[sourceType] = GetPropertyNamesInfos(out sourceProperties, sourceType, out _ppts);
+            TypePropertyDict[sourceType] = GetPropertyNamesInfos(sourceType, out sourceProperties,  out _ppts);
         }
 
         // target, get sorted list with property name and property info
         targetType = typeof(T); // target.GetType();
         if (!TypePropertyDict.TryGetValue(targetType, out targetProperties))
         {
-            NewMethod(targetType, out targetProperties, out _ppts);
+            GetPropertyNamesInfos(targetType, out targetProperties, out _ppts);
         }
 
         // interface
@@ -114,30 +114,6 @@ public class InterfacePropertiesClone : PropertiesClone
         }
 
         allPropertyNames = InterfaceTypePropertyDict[interfaceType];
-    }
-
-    private static Dictionary<string, PropertyInfo> NewMethod1(out Dictionary<string, PropertyInfo> sourceProperties, Type sourceType, out PropertyInfo[] _ppts)
-    {
-        _ppts = sourceType.GetProperties();
-        var _len = _ppts.Length;
-        sourceProperties = new Dictionary<string, PropertyInfo>(_len);
-
-        for (int i = 0; i < _len; i++)
-            sourceProperties[_ppts[i].Name] = _ppts[i];
-
-        return sourceProperties;
-    }
-
-    private static void NewMethod(Type targetType, out Dictionary<string, PropertyInfo> targetProperties, out PropertyInfo[] _ppts)
-    {
-        _ppts = targetType.GetProperties();
-        var _len = _ppts.Length;
-        targetProperties = new Dictionary<string, PropertyInfo>(_len);
-
-        for (int i = 0; i < _len; i++)
-            targetProperties[_ppts[i].Name] = _ppts[i];
-
-        TypePropertyDict[targetType] = targetProperties;
     }
 
     /// <summary>

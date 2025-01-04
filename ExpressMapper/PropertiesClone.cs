@@ -14,18 +14,18 @@ namespace InspiredCodes.ExpressMapper;
 public class PropertiesClone
 {
     protected static Dictionary<string, PropertyInfo> GetPropertyNamesInfos(
-        out Dictionary<string, PropertyInfo> sourceProperties, 
-        Type sourceType, 
-        out PropertyInfo[] propertyInfos)
+        Type targetType, 
+        out Dictionary<string, PropertyInfo> targetProperties, 
+        out PropertyInfo[] _ppts)
     {
-        propertyInfos = sourceType.GetProperties();
-        int _len = propertyInfos.Length;
-        sourceProperties = new Dictionary<string, PropertyInfo>(_len);
+        _ppts = targetType.GetProperties();
+        var _len = _ppts.Length;
+        targetProperties = new Dictionary<string, PropertyInfo>(_len);
 
         for (int i = 0; i < _len; i++)
-            sourceProperties[propertyInfos[i].Name] = propertyInfos[i];
+            targetProperties[_ppts[i].Name] = _ppts[i];
 
-        return sourceProperties;
+        return targetProperties;
     }
 
 }
